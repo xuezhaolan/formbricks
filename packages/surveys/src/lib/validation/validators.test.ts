@@ -110,7 +110,7 @@ describe("validators", () => {
     test("should handle invalid regex gracefully", () => {
       const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
       const result = validators.pattern.check("test", { pattern: "[invalid" }, {} as TSurveyElement);
-      expect(result.valid).toBe(true); // Returns valid for invalid regex
+      expect(result.valid).toBe(false);
       expect(consoleSpy).toHaveBeenCalled();
       consoleSpy.mockRestore();
     });

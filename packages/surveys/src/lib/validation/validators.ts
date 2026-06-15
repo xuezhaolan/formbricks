@@ -128,9 +128,8 @@ export const validators: Record<TValidationRuleType, TValidator> = {
         const regex = new RegExp(typedParams.pattern, typedParams.flags);
         return { valid: regex.test(value) };
       } catch {
-        // If regex is invalid, consider it valid (design-time should catch this)
         console.warn(`Invalid regex pattern: ${typedParams.pattern}`);
-        return { valid: true };
+        return { valid: false };
       }
     },
     getDefaultMessage: (_params: TValidationRuleParams, _element: TSurveyElement, t: TFunction): string => {

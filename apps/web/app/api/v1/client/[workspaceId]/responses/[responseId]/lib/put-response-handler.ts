@@ -145,6 +145,18 @@ const validateUpdateRequest = (
     };
   }
 
+  // Mirror the POST guard: once a survey stops accepting submissions, existing
+  // partial responses must not be updated or finalized either. Without this,
+  // a partial response created while the survey was open could still be
+  // finished (and consume quota) after the survey is closed/paused.
+  if (survey.status !== "inProgress") {
+    return {
+      response: responses.forbiddenResponse("Survey is not accepting submissions", true, {
+        surveyId: survey.id,
+      }),
+    };
+  }
+
   if (
     !validateClientFileUploads({
       data: responseUpdateInput.data,

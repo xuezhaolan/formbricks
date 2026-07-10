@@ -108,6 +108,7 @@ const getBaseSurvey = () =>
   ({
     id: surveyId,
     workspaceId,
+    status: "inProgress",
     blocks: [],
     questions: [],
   }) as const;
@@ -314,6 +315,38 @@ describe("putResponseHandler", () => {
       // Stable, locale-independent marker the surveys client keys off (see isResponseAlreadyCompletedError)
       details: { code: RESPONSE_ALREADY_FINISHED_ERROR_CODE },
     });
+    expect(mocks.updateResponseWithQuotaEvaluation).not.toHaveBeenCalled();
+  });
+
+  test("rejects updates when the survey is no longer accepting submissions", async () => {
+    mocks.getSurvey.mockResolvedValue({
+      ...getBaseSurvey(),
+      status: "completed",
+    });
+
+    const result = await putResponseHandler(createHandlerParams());
+
+    expect(result.response.status).toBe(403);
+    await expect(result.response.json()).resolves.toEqual({
+      code: "forbidden",
+      message: "Survey is not accepting submissions",
+      details: {
+        surveyId,
+      },
+    });
+    expect(mocks.updateResponseWithQuotaEvaluation).not.toHaveBeenCalled();
+    expect(mocks.sendToPipeline).not.toHaveBeenCalled();
+  });
+
+  test("rejects updates when the survey is paused", async () => {
+    mocks.getSurvey.mockResolvedValue({
+      ...getBaseSurvey(),
+      status: "paused",
+    });
+
+    const result = await putResponseHandler(createHandlerParams());
+
+    expect(result.response.status).toBe(403);
     expect(mocks.updateResponseWithQuotaEvaluation).not.toHaveBeenCalled();
   });
 

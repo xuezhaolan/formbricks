@@ -75,6 +75,10 @@ const getFieldLabel = (
   return undefined;
 };
 
+const formatFieldSpecificErrorMessage = (fieldLabel: string, baseMessage: string): string => {
+  return `${fieldLabel.trim().replace(/:+$/, "")}: ${baseMessage}`;
+};
+
 /**
  * Get default error message from rule or validator
  */
@@ -95,7 +99,7 @@ const getDefaultErrorMessage = (
   if (rule.field) {
     const fieldLabel = getFieldLabel(element, rule.field, languageCode);
     if (fieldLabel) {
-      return `${fieldLabel}: ${baseMessage}`;
+      return formatFieldSpecificErrorMessage(fieldLabel, baseMessage);
     }
   }
 

@@ -690,6 +690,32 @@ describe("validateElementResponse", () => {
       );
       expect(result.valid).toBe(false);
     });
+
+    test("should not duplicate punctuation when field label already ends with a colon", () => {
+      const element: TSurveyElement = {
+        id: "contact1",
+        type: TSurveyElementTypeEnum.ContactInfo,
+        headline: { default: "Contact Info" },
+        firstName: { show: true, required: false, placeholder: { default: "Nombre:" } },
+        lastName: { show: true, required: false, placeholder: { default: "Last Name" } },
+        email: { show: true, required: false, placeholder: { default: "Email" } },
+        phone: { show: true, required: false, placeholder: { default: "Phone" } },
+        company: { show: false, required: false, placeholder: { default: "Company" } },
+        required: false,
+        validation: {
+          rules: [{ id: "rule1", type: "maxLength", field: "firstName", params: { max: 3 } }],
+        },
+      } as unknown as TSurveyContactInfoElement;
+
+      const result = validateElementResponse(
+        element,
+        ["Nombre demasiado largo", "Doe", "test@example.com", "1234567890", ""],
+        "en"
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.errors[0].message).toBe("Nombre: errors.max_length");
+    });
   });
 
   describe("matrix element validation rules", () => {

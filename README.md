@@ -137,23 +137,31 @@ To get started with self-hosting with Docker, take a look at our [self-hosting d
 
 Here is what you need to be able to run Formbricks:
 
-- [Node.js](https://nodejs.org/en) (Version: >=18.x)
+- [Node.js](https://nodejs.org/en) (use the version in `.nvmrc`; `package.json` lists the supported ranges)
 
 - [Pnpm](https://pnpm.io/)
 
-- [Docker](https://www.docker.com/) - to run PostgreSQL and MailHog
+- [Docker](https://www.docker.com/) - to run the local database, mail, cache, storage and supporting services
 
 ### Local Setup
 
-To get started locally, we've got a [guide to help you](https://formbricks.com/docs/developer-docs/contributing/get-started#local-machine-setup).
+1. Install dependencies:
 
-### Gitpod Setup
+   ```bash
+   pnpm install
+   ```
 
-1. Click the button below to open this project in Gitpod.
+2. Start the local development stack:
 
-2. This will open a fully configured workspace in your browser with all the necessary dependencies already installed.
+   ```bash
+   pnpm go
+   ```
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/formbricks/formbricks)
+   This runs `pnpm dev:setup`, starts the Docker services from `docker-compose.dev.yml`, and launches the app and workers.
+
+3. Open [http://localhost:3000](http://localhost:3000).
+
+The setup script creates `.env` from `.env.example` when needed and generates the required local secrets.
 
 <a id="contribution"></a>
 

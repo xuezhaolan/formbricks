@@ -42,9 +42,9 @@ For other operating systems or a more customized installation, please refer to t
 
 - An Ubuntu Virtual Machine with SSH access.
 
-- A custom domain with an **A record** pointing to your server.
+- A custom domain with an **A and/or AAAA record** pointing to your server.
 
-- Ports **80** and **443** are open in your VM's Security Group, allowing Traefik to create an SSL certificate.
+- Ports **80** and **443** are open in your VM's Security Group, including IPv6 rules when your domain has an AAAA record, allowing Traefik to create an SSL certificate.
 
 ### Deployment
 
@@ -465,9 +465,9 @@ If you encounter any issues, you can check the logs of the containers with:
 
 If you encounter any issues, consider the following steps:
 
-- **Inbound Rules**: Make sure you have added inbound rules for Port 80 and 443 in your VM's Security Group.
+- **Inbound Rules**: Make sure you have added inbound rules for Port 80 and 443 in your VM's Security Group. If your domain has an AAAA record, ensure the IPv6 rules are open too.
 
-- **A Record**: Verify that you have set up an A record for your domain, pointing to your VM's IP address.
+- **A/AAAA Records**: Verify that you have set up an A and/or AAAA record for your domain, pointing to your VM's IP address. If an AAAA record exists, Let's Encrypt can validate over IPv6, so ports 80 and 443 must be reachable over IPv6 as well.
 
 - **Check Docker Instances**: Run `docker ps` to check the status of the Docker instances.
 

@@ -44,7 +44,13 @@ For other operating systems or a more customized installation, please refer to t
 
 - A custom domain with an **A record** pointing to your server.
 
-- Ports **80** and **443** are open in your VM's Security Group, allowing Traefik to create an SSL certificate.
+- If your domain also has an **AAAA record**, make sure it points to this server's IPv6 address. Otherwise,
+  remove the AAAA record before requesting the certificate so Let's Encrypt does not try to validate the wrong
+  host.
+
+- Ports **80** and **443** are open in your VM's Security Group and host firewall for every published address
+  family. If you publish both A and AAAA records, allow inbound HTTP and HTTPS over both IPv4 and IPv6 so
+  Traefik can create the SSL certificate.
 
 ### Deployment
 
@@ -141,7 +147,7 @@ my.hosted.url.com
 🔗 Do you want us to set up an HTTPS certificate for you? [Y/n]
 ```
 
-- **DNS Setup Prompt**: Ensure that your domain's DNS is correctly configured and ports 80 and 443 are open. Confirm this by entering `Y`. This step is crucial for proper SSL certificate issuance and secure server access.
+- **DNS Setup Prompt**: Ensure that your domain's DNS is correctly configured and ports 80 and 443 are open. Confirm this by entering `Y`. This step is crucial for proper SSL certificate issuance and secure server access. If your domain publishes an AAAA record, verify that it resolves to this server and that IPv6 inbound rules allow ports 80 and 443; otherwise remove the AAAA record before continuing.
 
 ```
 🚀 Executing default step of installing Formbricks

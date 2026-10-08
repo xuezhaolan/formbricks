@@ -32,6 +32,7 @@ export const PERSONAL_EMAIL_DOMAINS: readonly string[] = [
   "aol.com",
   // Apple
   "icloud.com",
+  "private.icloud.com",
   "me.com",
   "mac.com",
   "privaterelay.appleid.com",

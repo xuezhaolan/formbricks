@@ -36,6 +36,7 @@ describe("isBlockedEmailDomain", () => {
       "test@hotmail.com",
       "test@outlook.com",
       "test@icloud.com",
+      "test@private.icloud.com",
       "test@protonmail.com",
       "test@proton.me",
       "test@gmx.com",
